@@ -1,8 +1,11 @@
 ### Light Probe Image to  EquiRectangular Images
 
+<br />
+<br />
+<br />
+
 As proof of concept, this program can convert Light Probe Images to EquiRectangular Images directly. It is not neccesary to produce an intermediate cubemap texture and then map this to an EquiRectangular texture.
 
-<br />
 <br />
 <br />
 
@@ -12,7 +15,6 @@ On his website, Paul Debevec, a researcher at the University of Southern Califor
 
 The Mathematics of mapping a Light Probe image to another format e.g. vertical cross cubemaps is simple. Basically, it requires a 3D vector to be generated and transformed to a pair of texture coordinates which is then used to access the 2D Light Probe image. This project attempts to map a Light Probe image to an EquiRectangular image.
 
-<br />
 <br />
 <br />
 
