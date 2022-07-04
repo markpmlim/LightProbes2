@@ -163,8 +163,12 @@ https://forum.openframeworks.cc/t/offbo-and-core-image-filters-fix-sought/29051/
 https://bathatmedia.blogspot.com/2013/08/
 
 <br />
+<br />
 
-Developed with XCode 9.4.1
+**Developed with XCode 9.4.1**
+
+<br />
+<br />
 
 **Runtime requirements:**
 
