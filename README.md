@@ -38,7 +38,7 @@ Then the following equations:
 
 ```
 
-will convert the direction vector into a pair of texture coordinates which is used to access the Light Probe image.
+will convert the direction vector *dir* into a pair of texture coordinates which is used to access the Light Probe image.
 
 
 The output using the 2 light probes, UffizProbe.hdr and StPetersProbe.hdr are shown below.
@@ -68,7 +68,7 @@ Expected output using StPetersProbe.hdr:
 
 The interesting part of this project is an attempt to use Apple's classes **CIContext, CIImage, CGImage** etc. to write out an *.hdr* file.
 
-Adopting a workflow that is similar to the *Cubemap2EquiRect* demo in the Cubemapping Project, an instance of CIContext is created with the call:
+Adopting a workflow that is similar to the *Cubemap2EquiRect* demo in the Cubemapping Project, an instance of *CIContext* is created with the call:
 
 ```objective-c
 
@@ -79,13 +79,13 @@ Adopting a workflow that is similar to the *Cubemap2EquiRect* demo in the Cubema
 
 ```
 
-This is done during early during program execution. According to Apple's documentation, CIContext objects are immutable and can be called from any thread. There is a condition stipulate: Core Image objects must share resources with the OpenGL context the program is using.
+This is done early during initial setup of the program. According to Apple's documentation, *CIContext* objects are immutable and can be called from any thread. And these objects are expensive to create. There is a condition stipulated: Core Image objects must share resources with the OpenGL context the program is using.
 
 
-The program will transfer control to the OpenGLRenderer object to load and instantiate a texture from the Light Probe image as part of the renderer's initialization. Before returning control to the ViewController object, an offscreen *FBO* is created to capture an EquiRectangular texture which will be displayed during a per-frame update. See *draw* method of the OpenGLRenderer class.
+The program will transfer control to the initialization method of the class *OpenGLRenderer*. As part of the renderer's initialization process, the method loads and instantiates a texture from the Light Probe image. Before returning control to the *OpenGLViewController* object, an offscreen *FBO* is created to capture an EquiRectangular texture which will be displayed during a per-frame update. See the *draw* methods of the *OpenGLViewController* and *OpenGLRenderer* classes.
 
 
-When the user presses *s* to output the texture as an *.hdr* file, the ViewController method
+When the user presses *s* to output the texture as an *.hdr* file, the *OpenGLViewController* method
 
 ```objective-c
 
@@ -93,7 +93,7 @@ When the user presses *s* to output the texture as an *.hdr* file, the ViewContr
 
 ```
 
-a CIImage object is instantiated with the call:
+will instantiated a *CIImage* object with the call:
 
 ```objective-c
 
@@ -105,7 +105,7 @@ a CIImage object is instantiated with the call:
 
 ```
 
-According to Apple's docs, data should be supplied by the OpenGL texture with the texture ID, *textureName*. Creating an instance of CGImage (Core Graphics Image) from the CIImage (Core Image) object is trivial.
+According to Apple's docs, data should be supplied by the OpenGL texture with the texture ID, *textureName*. Creating an instance of *CGImage* (Core Graphics Image) from the *CIImage* (Core Image) object is trivial.
 
 ```objective-c
 
@@ -116,7 +116,7 @@ According to Apple's docs, data should be supplied by the OpenGL texture with th
 
 ```
 
-The following call should create an instance of NSBitmapImageRep whose *bitmapData* is a pointer to the raw data of the bitmap image representation.
+The following call should create an instance of *NSBitmapImageRep* whose *bitmapData* is a pointer to the raw data of the bitmap image representation.
 
 
 ```objective-c
@@ -131,7 +131,9 @@ The following properties of the NSBitmapImageRep object will provide information
 
 *bitmapFormat, pixelsWide, pixelsHigh, samplesPerPixel, bitsPerSample, bitsPerPixel, numberOfPlanes, bytesPerRow* and *bytesPerPlane*.
 
-The property of an NSBitmapImageRep object,  *bitmapData*, should be a pointer to the a 16-bit bitmap data which must be converted to a 32-bit bitmap and then pass to the *stbi_write_hdr* function. 
+<br />
+
+The property of an *NSBitmapImageRep* object,  *bitmapData*, should be a pointer to the a 16-bit bitmap data which must be converted to a 32-bit bitmap and then pass to the *stbi_write_hdr* function. 
 
 However, the output image is black indicating the bitmapData probably consists of zeroes; the pointer to the 16-bit bitmap is not NIL.
 
@@ -139,7 +141,7 @@ However, the output image is black indicating the bitmapData probably consists o
 <br />
 <br />
 
-As an alternative, we fallback on OpenGL calls to extract the bitmap data and write it to a *.hdr* file. Re-compile the program using *OpenGLViewcontroller.m*. Remember to remove *OpenGLViewcontroller2.m* from #Compile Sources#. The resulting *.hdr* image needs to be flipped vertically.
+As an alternative, we fallback on OpenGL function calls to extract the bitmap data and write it to a *.hdr* file. Re-compile the program using *OpenGLViewcontroller.m*. Remember to remove *OpenGLViewcontroller2.m* from #Compile Sources#. The resulting *.hdr* image needs to be flipped vertically.
 
 <br />
 <br />
