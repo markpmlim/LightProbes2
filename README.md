@@ -18,7 +18,7 @@ The Mathematics of mapping a Light Probe image to another format e.g. vertical c
 <br />
 <br />
 
-This process starts with the vertex shader, *SimpleVertexShader.glsl* processing data associated with a vertex of a quad; eventually the OpenGL's Rasterizer will receive the input primitives and generate fragments to be processed by a fragment shader. In this program, the fragment shader *EquiRectFragmentShader.glsl* receives the interpolated values of a pair of texture coordinates. This pair of values are transfomed into a 3D normalized vector using the equation:
+This process starts with the vertex shader, *SimpleVertexShader.glsl* processing data associated with a vertex of a quad; eventually, the OpenGL's Rasterizer will receive the input primitives and generate fragments to be further processed by a fragment shader. In this program, the fragment shader *EquiRectFragmentShader.glsl* receives the interpolated values of a pair of texture coordinates which are transfomed into a 3D normalized vector using the equation:
 
 ```glsl
 
@@ -44,7 +44,6 @@ will convert the direction vector into a pair of texture coordinates which is us
 The output using the 2 light probes, UffizProbe.hdr and StPetersProbe.hdr are shown below.
 
 
-
 Expected output using UffiziProbe.hdr:
 
 <p align="center">
@@ -55,6 +54,7 @@ Expected output using UffiziProbe.hdr:
 
 Expected output using StPetersProbe.hdr:
 
+
 <p align="center">
   <img src="./StPetersBasilica.png">
 </p>
@@ -62,22 +62,27 @@ Expected output using StPetersProbe.hdr:
 
 **<p align="center" >St Peter's Basilica</p>**
 
-The interesting part of this project is an attempt to use Apple's classes CIContext, CIImage, CGImage etc. to write out an *.hdr* file.
+<br />
+<br />
+
+
+The interesting part of this project is an attempt to use Apple's classes **CIContext, CIImage, CGImage** etc. to write out an *.hdr* file.
 
 Adopting a workflow that is similar to the *Cubemap2EquiRect* demo in the Cubemapping Project, an instance of CIContext is created with the call:
 
 ```objective-c
-CIContext *giCIContext = [CIContext contextWithCGLContext:CGLGetCurrentContext()
-                                              pixelFormat:[pf CGLPixelFormatObj]
-                                               colorSpace:cs
-                                                  options:nil];
+
+    CIContext *giCIContext = [CIContext contextWithCGLContext:CGLGetCurrentContext()
+                                                  pixelFormat:[pf CGLPixelFormatObj]
+                                                   colorSpace:cs
+                                                      options:nil];
 
 ```
 
-This is done during early during program execution. According to Apple's documentation, CIContext objects are immutable and can be called from any thread. CoreImage objects must share resources with the OpenGL context the program is using.
+This is done during early during program execution. According to Apple's documentation, CIContext objects are immutable and can be called from any thread. There is a condition stipulate: Core Image objects must share resources with the OpenGL context the program is using.
 
 
-The program will transfer control to the OpenGLRenderer object to load and instantiate a texture from the Light Probe image as part of its initialization. Before returning control to the ViewController object, an offscreen FBO is created to capture an EquiRectangular texture which will be displayed during a per-frame update. See *draw* method of the OpenGLRenderer class.
+The program will transfer control to the OpenGLRenderer object to load and instantiate a texture from the Light Probe image as part of the renderer's initialization. Before returning control to the ViewController object, an offscreen *FBO* is created to capture an EquiRectangular texture which will be displayed during a per-frame update. See *draw* method of the OpenGLRenderer class.
 
 
 When the user presses *s* to output the texture as an *.hdr* file, the ViewController method
