@@ -133,9 +133,9 @@ The following properties of the NSBitmapImageRep object will provide information
 
 <br />
 
-The property of an *NSBitmapImageRep* object,  *bitmapData*, should be a pointer to the a 16-bit bitmap data which must be converted to a 32-bit bitmap and then pass to the *stbi_write_hdr* function. 
+The  *bitmapData* property of an *NSBitmapImageRep* object, should be a pointer to the a 16-bit bitmap data which must be converted to a 32-bit bitmap and then pass to the *stbi_write_hdr* function.
 
-However, the output image is black indicating the bitmapData probably consists of zeroes; the pointer to the 16-bit bitmap is not NIL.
+However, the output image is black indicating the bitmapData probably consists entirely of zeroes; the pointer to the 16-bit bitmap is not NIL.
 
 <br />
 <br />
@@ -147,7 +147,8 @@ As an alternative, we fallback on OpenGL function calls to extract the bitmap da
 <br />
 <br />
 
-Web links:
+## Web links:
+<br />
 
 https://www.pauldebevec.com/Probes/
 
@@ -161,10 +162,11 @@ https://forum.openframeworks.cc/t/offbo-and-core-image-filters-fix-sought/29051/
 
 https://bathatmedia.blogspot.com/2013/08/
 
+<br />
 
 Developed with XCode 9.4.1
 
-Runtime requirements:
+**Runtime requirements:**
 
 >macOS OpenGL 3.2
 
