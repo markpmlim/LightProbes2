@@ -45,6 +45,23 @@ The output using the 2 light probes, UffizProbe.hdr and StPetersProbe.hdr are sh
 
 
 
+Expected output using UffiziProbe.hdr:
+
+<p align="center">
+  <img src="./UffiziPlaza.png">
+</p>
+
+**<p align="center" >Uffizi Plaza</p>**
+
+Expected output using StPetersProbe.hdr:
+
+<p align="center">
+  <img src="./StPetersBasilica.png">
+</p>
+
+
+**<p align="center" >St Peter's Basilica</p>**
+
 The interesting part of this project is an attempt to use Apple's classes CIContext, CIImage, CGImage etc. to write out an *.hdr* file.
 
 Adopting a workflow that is similar to the *Cubemap2EquiRect* demo in the Cubemapping Project, an instance of CIContext is created with the call:
