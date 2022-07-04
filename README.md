@@ -49,7 +49,7 @@ The interesting part of this project is an attempt to use Apple's classes CICont
 
 Adopting a workflow that is similar to the *Cubemap2EquiRect* demo in the Cubemapping Project, an instance of CIContext is created with the call:
 
-```objC
+```objective-c
 CIContext *giCIContext = [CIContext contextWithCGLContext:CGLGetCurrentContext()
                                               pixelFormat:[pf CGLPixelFormatObj]
                                                colorSpace:cs
@@ -65,7 +65,7 @@ The program will transfer control to the OpenGLRenderer object to load and insta
 
 When the user presses *s* to output the texture as an *.hdr* file, the ViewController method
 
-```objC
+```objective-c
 
     saveTexture:size:toURL:error:
 
@@ -73,7 +73,7 @@ When the user presses *s* to output the texture as an *.hdr* file, the ViewContr
 
 a CIImage object is instantiated with the call:
 
-```objC
+```objective-c
 
     CIImage* ciImage = [CIImage imageWithTexture:textureName
                                             size:size
@@ -85,7 +85,7 @@ a CIImage object is instantiated with the call:
 
 According to Apple's docs, data should be supplied by the OpenGL texture with the texture ID, *textureName*. Creating an instance of CGImage (Core Graphics Image) from the CIImage (Core Image) object is trivial.
 
-```objC
+```objective-c
 
     CGImageRef cgImage = [glCIContext createCGImage:ciImage
                                            fromRect:cgRect
@@ -97,7 +97,7 @@ According to Apple's docs, data should be supplied by the OpenGL texture with th
 The following call should create an instance of NSBitmapImageRep whose *bitmapData* is a pointer to the raw data of the bitmap image representation.
 
 
-```objC
+```objective-c
 
     NSBitmapImageRep* bir = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
 
