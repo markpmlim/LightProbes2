@@ -63,7 +63,7 @@
         printf("angular map location:%u\n", _angularMapLoc);
 
         //printf("%d %d %d\n", _resolutionLoc, _mouseLoc, _timeLoc);
-        _lightProbeTextureID = [self textureWithContentsOfFile:@"UffiziProbe.hdr"
+        _lightProbeTextureID = [self textureWithContentsOfFile:@"StPetersProbe.hdr"
                                                     resolution:&_tex0Resolution];
         printf("texture ID:%u\n", _lightProbeTextureID);
         printf("%f %f\n", _tex0Resolution.width, _tex0Resolution.height);
@@ -85,7 +85,6 @@
                                             withFragmentSourceURL:fragmentSourceURL];
         _equiRectMapLoc = glGetUniformLocation(_glslProgram, "equiRectImage");
         glBindVertexArray(0);
-        
     }
 
     return self;
@@ -111,25 +110,58 @@
                                                          1.0f, 5000.0);
 }
 
+/*
+ All light probe images are in HDR format.
+ */
 - (GLuint) textureWithContentsOfFile:(NSString *)name
-                           resolution:(CGSize *)size {
-
-    //NSLog(@"%@", names);
+                          resolution:(CGSize *)size
+{
     GLuint textureID = 0;
+    
     NSBundle *mainBundle = [NSBundle mainBundle];
     NSArray<NSString *> *subStrings = [name componentsSeparatedByString:@"."];
     NSString *path = [mainBundle pathForResource:subStrings[0]
                                           ofType:subStrings[1]];
     
-    GLint width = 0;
-    GLint height = 0;
-    GLint nrComponents = 0;
-
+    GLint width;
+    GLint height;
+    GLint nrComponents;
+    
     stbi_set_flip_vertically_on_load(true);
     GLfloat *data = stbi_loadf([path UTF8String], &width, &height, &nrComponents, 0);
     if (data) {
+        size_t dataSize = width * height * nrComponents * sizeof(GLfloat);
+        
+        // Create and allocate space for a new buffer object
+        GLuint pbo;
+        glGenBuffers(1, &pbo);
+        // Bind the newly-created buffer object to initialise it.
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+        // NULL means allocate GPU memory to the PBO.
+        // GL_STREAM_DRAW is a hint indicating the PBO will stream a texture upload
+        glBufferData(GL_PIXEL_UNPACK_BUFFER,
+                     dataSize,
+                     NULL,
+                     GL_STREAM_DRAW);
+        
+        // The following call will return a pointer to the buffer object.
+        // We are going to write data to the PBO. The call will only return when
+        //  the GPU finishes its work with the buffer object.
+        void* mappedPtr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER,
+                                      GL_WRITE_ONLY);
+        
+        // Write data into the mapped buffer, possibly on another thread.
+        // This should upload image's raw data to GPU
+        memcpy(mappedPtr, data, dataSize);
+        
+        // After reading is complete, back on the current thread
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+        // Release pointer to mapping buffer
+        glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+        
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
+        // Read the texel data from the buffer object
         glTexImage2D(GL_TEXTURE_2D,
                      0,
                      GL_RGB16F,
@@ -137,15 +169,23 @@
                      0,
                      GL_RGB,
                      GL_FLOAT,
-                     data);
+                     NULL);     // byte offset into the buffer object's data store
+        
+        // Unbind and delete the buffer object
+        glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+        glDeleteBuffers(1, &pbo);
+        
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         stbi_image_free(data);
     }
-    size->width = width;
-    size->height = height;
+    else {
+        printf("Error reading hdr file\n");
+        exit(1);
+    }
+    
     return textureID;
 }
 

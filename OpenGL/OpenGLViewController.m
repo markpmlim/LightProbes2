@@ -1,6 +1,9 @@
 /*
+See LICENSE folder for this sample’s licensing information.
 
- */
+Abstract:
+Implementation of the cross-platform view controller and cross-platform view that displays OpenGL content.
+*/
 #import "OpenGLViewController.h"
 #import "OpenGLRenderer.h"
 #import "AAPLMathUtilities.h"
@@ -253,13 +256,41 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
     printf("Total Size:%lu\n", dataSize);
     void *srcData = malloc(dataSize);
 
-    // format and type are the pixel format and type of the desired data
+    // Create and allocate space for a new buffer object
+    GLuint  pbo;
+    glGenBuffers(1, &pbo);
+    // Bind the newly-created buffer object to initialise it.
+    glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+    // NULL means allocate GPU memory to the PBO.
+    // GL_STREAM_READ is a hint indicating the PBO will stream a texture download
+    glBufferData(GL_PIXEL_PACK_BUFFER,
+                 dataSize,
+                 NULL,
+                 GL_STREAM_READ);
+
+    // The parameters "format" and "type" are the pixel format
+    //  and type of the desired data
+    // Transfer texture into PBO
     glGetTexImage(GL_TEXTURE_2D,    // target
                   0,                // level of detail
                   GL_RGB,           // format
                   GL_FLOAT,         // type GL_HALF_FLOAT does not work
-                  srcData);
-    GetGLError();
+                  NULL);            // offset into the buffer
+
+    // We are going to read data from the PBO. The call will only return when
+    //  the GPU finishes its work with the buffer object.
+    void *mappedPtr = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
+    // This should download the image's raw data from the GPU
+    memcpy(srcData, mappedPtr, dataSize);
+    // Release pointer to the mapping buffer
+    glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+
+    // Unbind and delete the buffer
+    glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+    glDeleteBuffers(1, &pbo);
+
+    //GetGLError();
+
     int err = stbi_write_hdr(filePath,
                              (int)width, (int)height,
                              3,

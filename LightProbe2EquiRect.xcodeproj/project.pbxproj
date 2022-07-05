@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A4DDD522283D8C20095BC87 /* OpenGLRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4DDD462283CE4D0095BC87 /* OpenGLRenderer.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		3A4DDD552283D8C20095BC87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABD52E92283BB9B0050D28E /* main.m */; };
 		3A4DDD562283D8C20095BC87 /* AAPLMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A40C5AE2277F0F500DBB29F /* AAPLMathUtilities.m */; };
 		3A4DDD642283D9150095BC87 /* AAPLMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A40C5AE2277F0F500DBB29F /* AAPLMathUtilities.m */; };
@@ -18,7 +17,6 @@
 		3A54891422A8329700D4B25A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A54890F22A8329700D4B25A /* Main.storyboard */; };
 		3A8BF91B22BC13DF0037A7F0 /* OpenGLRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4DDD462283CE4D0095BC87 /* OpenGLRenderer.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		EE4EE3BB2872887600E6B823 /* OpenGLViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = EE4EE3B92872887600E6B823 /* OpenGLViewController2.m */; };
-		EE4EE3BD2872A2C200E6B823 /* OpenGLViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = EE4EE3B92872887600E6B823 /* OpenGLViewController2.m */; };
 		EE6A5FE2286F025300406FBF /* StPetersProbe.hdr in Resources */ = {isa = PBXBuildFile; fileRef = EE6A5FE1286F025300406FBF /* StPetersProbe.hdr */; };
 		EE6A5FE3286F025300406FBF /* StPetersProbe.hdr in Resources */ = {isa = PBXBuildFile; fileRef = EE6A5FE1286F025300406FBF /* StPetersProbe.hdr */; };
 		EE733B482869B9E200FEE5F4 /* UffiziProbe.hdr in Resources */ = {isa = PBXBuildFile; fileRef = EE733B472869B9E200FEE5F4 /* UffiziProbe.hdr */; };
@@ -27,12 +25,13 @@
 		EEB02A73285F251300E9FC37 /* SimpleVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EEB02A70285F251300E9FC37 /* SimpleVertexShader.glsl */; };
 		EEB02A74285F251300E9FC37 /* EquiRectFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EEB02A71285F251300E9FC37 /* EquiRectFragmentShader.glsl */; };
 		EEB02A75285F251300E9FC37 /* EquiRectFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EEB02A71285F251300E9FC37 /* EquiRectFragmentShader.glsl */; };
+		EEBCB1D42873AE2C0083DC11 /* OpenGLRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4DDD462283CE4D0095BC87 /* OpenGLRenderer.m */; };
+		EEBCB1D52873AE4F0083DC11 /* OpenGLViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = EE4EE3B92872887600E6B823 /* OpenGLViewController2.m */; };
 		EEEE4F4F286A57E700EEDBAC /* SimpleFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EEEE4F4E286A57E700EEDBAC /* SimpleFragmentShader.glsl */; };
 		EEEE4F50286A57E700EEDBAC /* SimpleFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EEEE4F4E286A57E700EEDBAC /* SimpleFragmentShader.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		22932430229181E000000001 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; wrapsLines = 1; };
 		3A40C5AD2277F0F500DBB29F /* AAPLMathUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLMathUtilities.h; sourceTree = "<group>"; };
 		3A40C5AE2277F0F500DBB29F /* AAPLMathUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLMathUtilities.m; sourceTree = "<group>"; };
 		3A4DDD462283CE4D0095BC87 /* OpenGLRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenGLRenderer.m; sourceTree = "<group>"; };
@@ -81,7 +80,6 @@
 		3A40C59F2277F0F500DBB29F = {
 			isa = PBXGroup;
 			children = (
-				22932430229181E000000001 /* README.md */,
 				3ABD53012283C3710050D28E /* Common */,
 				EE6B20BE284B588000027AD7 /* Images */,
 				3ABD53072283C4110050D28E /* OpenGL */,
@@ -314,9 +312,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE4EE3BD2872A2C200E6B823 /* OpenGLViewController2.m in Sources */,
-				3A4DDD522283D8C20095BC87 /* OpenGLRenderer.m in Sources */,
+				EEBCB1D42873AE2C0083DC11 /* OpenGLRenderer.m in Sources */,
 				3A4DDD552283D8C20095BC87 /* main.m in Sources */,
+				EEBCB1D52873AE4F0083DC11 /* OpenGLViewController2.m in Sources */,
 				3A4DDD562283D8C20095BC87 /* AAPLMathUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
