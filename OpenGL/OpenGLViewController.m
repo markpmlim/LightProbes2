@@ -1,9 +1,12 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+ OpenGLViewController.m
+ LightProbe2EquiRect
+ 
+ Created by Mark Lim Pak Mun on 01/07/2022.
+ Copyright © 2022 Mark Lim Pak Mun. All rights reserved.
 
-Abstract:
-Implementation of the cross-platform view controller and cross-platform view that displays OpenGL content.
-*/
+ Code based on Apple's MigratingOpenGLCodeToMetal
+ */
 #import "OpenGLViewController.h"
 #import "OpenGLRenderer.h"
 #import "AAPLMathUtilities.h"
@@ -267,7 +270,7 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
                  dataSize,
                  NULL,
                  GL_STREAM_READ);
-
+    
     // The parameters "format" and "type" are the pixel format
     //  and type of the desired data
     // Transfer texture into PBO
@@ -275,7 +278,7 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
                   0,                // level of detail
                   GL_RGB,           // format
                   GL_FLOAT,         // type GL_HALF_FLOAT does not work
-                  NULL);            // offset into the buffer
+                  NULL);
 
     // We are going to read data from the PBO. The call will only return when
     //  the GPU finishes its work with the buffer object.
@@ -289,7 +292,7 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
     glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
     glDeleteBuffers(1, &pbo);
 
-    //GetGLError();
+    GetGLError();
 
     int err = stbi_write_hdr(filePath,
                              (int)width, (int)height,

@@ -1,4 +1,11 @@
 /*
+ OpenGLViewController.h
+ LightProbe2EquiRect
+ 
+ Created by Mark Lim Pak Mun on 01/07/2022.
+ Copyright © 2022 Mark Lim Pak Mun. All rights reserved.
+ 
+ Code based on Apple's MigratingOpenGLCodeToMetal
 
  */
 

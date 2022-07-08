@@ -1,4 +1,11 @@
 /*
+ OpenGLViewController2.m
+ LightProbe2EquiRect
+ 
+ Created by Mark Lim Pak Mun on 01/07/2022.
+ Copyright © 2022 Mark Lim Pak Mun. All rights reserved.
+ 
+ Code based on Apple's MigratingOpenGLCodeToMetal
 
  */
 #import "OpenGLViewController.h"
@@ -262,7 +269,6 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
                                          flipped:NO
                                          options:options];
 
-    // Try adding a fence? Nope, doesn't work.
     GLsync sync = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
     GLenum value = glClientWaitSync(sync, GL_SYNC_FLUSH_COMMANDS_BIT, 1000000);
     printf("glClientWaitSync value:0x%0X\n", value);
@@ -272,13 +278,13 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
     // A CIImage object has all the information necessary to produce an image,
     //  but Core Image doesn’t actually render an image until it is told to do so.
     CGAffineTransform transform = CGAffineTransformIdentity;
+    //CGAffineTransform transform = CGAffineTransformMakeTranslation(0.0, 0.0);
     transform = CGAffineTransformScale(transform, 1.0, 1.0);
     ciImage = [ciImage imageByApplyingTransform:transform];
     NSLog(@"CIImage: %@", ciImage);
     // Check if we are using the CIContext object created earlier for re-use.
     NSLog(@"CIContext: %@", glCIContext);
 
-    // Adding this also doesn't work.
     CGRect inRect  = CGRectMake(0, 0, size.width, size.height);
     CGRect outRect = CGRectMake(0, 0, size.width, size.height);
     [glCIContext drawImage:ciImage
@@ -315,7 +321,7 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
     }
     NSLog(@"%ld %ld", bir.bytesPerRow, bir.bytesPerPlane);
 
-    uint16 *srcData = (uint16 *)bir.bitmapData;     // all zeros???
+    uint16 *srcData = (uint16 *)bir.bitmapData;     // all zeros
     NSLog(@"Pointer to Src Data:%p\n", srcData);
 
     if (![fileURL.absoluteString containsString:@"."]) {

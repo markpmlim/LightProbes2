@@ -1,6 +1,4 @@
-// https://www.shadertoy.com/view/tdjXDt
-// Cubemap debug display
-// Combine 6 separate 2D images ---> 1 horizontal cubic crossmap
+// To map the LightProbe image onto an EquiRectangular Image.
 #ifdef GL_ES
 precision highp float;
 #endif
@@ -22,15 +20,12 @@ uniform sampler2D angularMapImage;      // Texture of Light Probe image
 
 #define M_PI 3.1415926535897932384626433832795
 
-// The six 2D textures of the cubemap are flipped horizontally.
 // Note: the view's dimensions are set as 2:1 using XCode's IB.
 // To save the equirectangular texture as a 2:1 graphic, we might
 //  have to run a second pair of vertex-fragment shader to scale
 //  the texture produced by this shader by 2:1
 void main(void) {
-    // Convert the view port coords:
-    // horizontal: [0,  width-1] --> [0.0, 1.0)
-    //   vertical: [0, height-1] --> [0.0, 1.0)
+
     vec2 uv = texCoords;
     // Map uv's range from [0.0, 1.0) --> [-1.0, 1.0)
     uv = 2.0 * uv - 1.0;

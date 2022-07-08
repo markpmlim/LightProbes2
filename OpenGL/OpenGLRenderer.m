@@ -1,4 +1,9 @@
 /*
+ OpenGLRenderer.m
+ LightProbe2EquiRect
+ 
+ Created by Mark Lim Pak Mun on 01/07/2022.
+ Copyright © 2022 Mark Lim Pak Mun. All rights reserved.
 
  */
 
@@ -85,6 +90,7 @@
                                             withFragmentSourceURL:fragmentSourceURL];
         _equiRectMapLoc = glGetUniformLocation(_glslProgram, "equiRectImage");
         glBindVertexArray(0);
+        
     }
 
     return self;
@@ -114,24 +120,23 @@
  All light probe images are in HDR format.
  */
 - (GLuint) textureWithContentsOfFile:(NSString *)name
-                          resolution:(CGSize *)size
-{
+                          resolution:(CGSize *)size {
     GLuint textureID = 0;
-    
+
     NSBundle *mainBundle = [NSBundle mainBundle];
     NSArray<NSString *> *subStrings = [name componentsSeparatedByString:@"."];
     NSString *path = [mainBundle pathForResource:subStrings[0]
                                           ofType:subStrings[1]];
-    
+
     GLint width;
     GLint height;
     GLint nrComponents;
-    
+
     stbi_set_flip_vertically_on_load(true);
     GLfloat *data = stbi_loadf([path UTF8String], &width, &height, &nrComponents, 0);
     if (data) {
         size_t dataSize = width * height * nrComponents * sizeof(GLfloat);
-        
+
         // Create and allocate space for a new buffer object
         GLuint pbo;
         glGenBuffers(1, &pbo);
@@ -143,22 +148,28 @@
                      dataSize,
                      NULL,
                      GL_STREAM_DRAW);
-        
+
         // The following call will return a pointer to the buffer object.
         // We are going to write data to the PBO. The call will only return when
         //  the GPU finishes its work with the buffer object.
+    #if TARGET_MACOS
         void* mappedPtr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER,
                                       GL_WRITE_ONLY);
-        
+    #else
+        void* mappedPtr = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER,
+                                           0,
+                                           dataSize,
+                                           GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    #endif
         // Write data into the mapped buffer, possibly on another thread.
         // This should upload image's raw data to GPU
         memcpy(mappedPtr, data, dataSize);
-        
+
         // After reading is complete, back on the current thread
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
         // Release pointer to mapping buffer
         glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
-        
+
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
         // Read the texel data from the buffer object
@@ -170,11 +181,11 @@
                      GL_RGB,
                      GL_FLOAT,
                      NULL);     // byte offset into the buffer object's data store
-        
+
         // Unbind and delete the buffer object
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
         glDeleteBuffers(1, &pbo);
-        
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

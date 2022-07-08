@@ -1,4 +1,4 @@
-### Light Probe Image to  EquiRectangular Images
+### Light Probe Image to  EquiRectangular Image
 
 <br />
 <br />

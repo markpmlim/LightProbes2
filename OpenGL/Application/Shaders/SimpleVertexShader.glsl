@@ -14,7 +14,7 @@ varying vec2 texCoords;
  The position and texture coordinates attributes of 3 vertices are
  generated on the fly.
  position: (-1.0, -1.0), (3.0, -1.0), (-1.0, 3.0)
- uv: ( 0.0,  0.0), (2.0,  0.0), ( 0.0, 2.0)
+       uv: ( 0.0,  0.0), (2.0,  0.0), ( 0.0, 2.0)
  The area of the generated triangle covers the entire 2D clip-space.
  Note: any geometry rendered outside this 2D space is clipped.
  Clip-space:
