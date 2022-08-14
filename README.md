@@ -143,6 +143,9 @@ However, the output image is black indicating the bitmapData probably consists e
 
 As an alternative, we fallback on OpenGL function calls to extract the bitmap data and write it to a *.hdr* file. Re-compile the program using *OpenGLViewcontroller.m*. Remember to remove *OpenGLViewcontroller2.m* from #Compile Sources#. The resulting *.hdr* image needs to be flipped vertically.
 
+
+The output equirectangular image is flipped.
+
 <br />
 
 **Note**: This Readme.md file contains several html tags which cannot be displayed by XCode's Editor.
