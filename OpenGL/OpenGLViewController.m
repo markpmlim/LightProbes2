@@ -253,9 +253,12 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
     bits += _cbits;
 
     printf("# of bits per pixel:%d\n", bits);
-    const size_t kBitsPerByte = 8;
+    //const size_t kBitsPerByte = 8;
     const size_t kSrcChannelCount = 3;
-    size_t dataSize = width*height*kSrcChannelCount*sizeof(GLfloat);
+    // Note: each pixel is 3x4 = 12 bytes and not 3x2=6 bytes
+    // because OpenGL returns each pixel as a GLfloat not a half GLfloat.
+    const size_t bytesPerRow = width*kSrcChannelCount*sizeof(GLfloat);
+    size_t dataSize = bytesPerRow*height;
     printf("Total Size:%lu\n", dataSize);
     void *srcData = malloc(dataSize);
 
@@ -294,12 +297,23 @@ static CVReturn OpenGLDisplayLinkCallback(CVDisplayLinkRef displayLink,
 
     GetGLError();
 
+    // Flip the image since it is upside down.
+    void *destData = malloc(dataSize);
+    // Start by reading the last row of the extracted image and
+    //  writing the first row of the image to be output to disk.
+    for (int srcRowNum = height - 1, destRowNum = 0; srcRowNum >= 0; srcRowNum--, destRowNum++) {
+        // Copy the entire row in one shot
+        memcpy(destData + (destRowNum * bytesPerRow),
+               srcData + (srcRowNum * bytesPerRow),
+               bytesPerRow);
+    }
+
     int err = stbi_write_hdr(filePath,
                              (int)width, (int)height,
                              3,
-                             srcData);
-    // Image is flipped vertically.
+                             destData);
     free(srcData);
+    free(destData);
     if (err == 0) {
         if (error != NULL)
         {
