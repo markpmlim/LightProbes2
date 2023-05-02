@@ -26,7 +26,7 @@ varying vec2 texCoords;
  https://rauwendaal.net/2014/06/14/rendering-a-screen-covering-triangle-in-opengl/
  For the mathematically inclined:
  the points (3.0, -1.0) and (-1.0, 3.0) lie on the line y + x = 2
- The point (1.0, 1.0) line on this line.
+ The point (1.0, 1.0) is on this line.
  */
 void main(void)
 {
